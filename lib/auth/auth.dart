@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:samba/auth/sign_in_or_sign_up.dart';
+import 'package:samba/auth/change_auth_page.dart';
 import 'package:samba/pages/home.dart';
 
 class AuthPage extends StatelessWidget {
@@ -9,6 +9,7 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       resizeToAvoidBottomInset: false,
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -19,7 +20,7 @@ class AuthPage extends StatelessWidget {
           }
           //EL usuario no ha iniciado sesión
           else {
-            return const SignInOrSignUp();
+            return const ChangeAuthPage();
           }
         },
       ),

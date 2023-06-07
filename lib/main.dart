@@ -8,9 +8,17 @@ import 'package:samba/themes/light.dart';
 import 'auth/auth.dart';
 
 void main() async {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Bloquear rotación de la pantalla
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  //Barra de navegación transparente
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+    ),
+  );
   runApp(const MyApp());
 }
 

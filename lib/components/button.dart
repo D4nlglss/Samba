@@ -32,10 +32,10 @@ class MyButton extends StatelessWidget {
                 (states) => Theme.of(context).colorScheme.primary),
           ),
           onPressed: onPressed,
-          child: const Center(
+          child: Center(
             child: Text(
-              "Iniciar sesión",
-              style: TextStyle(
+              text,
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),

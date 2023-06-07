@@ -9,7 +9,8 @@ import '../components/snackbar.dart';
 
 class SignInPage extends StatefulWidget {
   final Function()? onTap;
-  const SignInPage({super.key, required this.onTap});
+  final Function()? onTapII;
+  const SignInPage({super.key, required this.onTap, required this.onTapII});
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -53,6 +54,7 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      extendBody: true,
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
@@ -144,7 +146,7 @@ class _SignInPageState extends State<SignInPage> {
                       height: 20,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: widget.onTapII,
                       child: Text(
                         "Recuperar contraseña",
                         style: TextStyle(
