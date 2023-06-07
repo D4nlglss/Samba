@@ -34,7 +34,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^2.13.1
   firebase_auth: ^4.6.2
-  cloud_firestore:
+  cloud_firestore: ^4.8.0
   google_fonts:
   connectivity_plus:
   internet_connection_checker:
