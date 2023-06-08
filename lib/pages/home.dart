@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:samba/components/note_wall.dart';
-import 'package:samba/components/text_field.dart';
+import 'package:samba/components/alert_dialog.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -34,6 +34,10 @@ class _HomeState extends State<HomePage> {
     textController.text = '';
   }
 
+  uploadNote() {
+    addNoteDialog(context, 'Añadir nota', textController, addNote);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,57 +50,60 @@ class _HomeState extends State<HomePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
+      body: SafeArea(
+        child: Stack(
           children: [
-            Expanded(
-              child: StreamBuilder(
-                stream:
-                    FirebaseFirestore.instance.collection('notes').snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          final note = snapshot.data!.docs[index];
-                          return NoteWall(
-                              title: note['title'],
-                              body: note['body'],
-                              owner: note['owner'],
-                              category: note['category'],
-                              color: note['color'],
-                              textColor: note['textColor']);
-                        });
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                      child: Text('Ha ocurrido un error'),
-                    );
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(25),
-              child: Row(
+            Center(
+              child: Column(
                 children: [
                   Expanded(
-                    child: MyTextFieldII(
-                      controller: textController,
-                      hintText: 'Título',
-                      obscureText: false,
-                      action: TextInputAction.done,
+                    child: StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('notes')
+                          .where('owner', isEqualTo: currentUser.email)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                final note = snapshot.data!.docs[index];
+                                return NoteWall(
+                                    title: note['title'],
+                                    body: note['body'],
+                                    owner: note['owner'],
+                                    category: note['category'],
+                                    color: note['color'],
+                                    textColor: note['textColor']);
+                              });
+                        } else if (snapshot.hasError) {
+                          return const Center(
+                            child: Text('Ha ocurrido un error'),
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
                     ),
                   ),
-                  IconButton(
-                      onPressed: addNote,
-                      icon: const Icon(Icons.add_circle_outline_outlined)),
+                  Text('Has iniciado sesión como: ${currentUser.email!}'),
                 ],
               ),
             ),
-            Text('Has iniciado sesión como: ${currentUser.email!}'),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: MaterialButton(
+                  shape: const CircleBorder(),
+                  onPressed: uploadNote,
+                  color: Theme.of(context).colorScheme.background,
+                  padding: const EdgeInsets.all(13),
+                  child: const Text('+', style: TextStyle(fontSize: 32)),
+                ),
+              ),
+            ),
           ],
         ),
       ),
