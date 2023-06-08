@@ -18,7 +18,7 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      cursorColor: Theme.of(context).colorScheme.tertiary,
+      cursorColor: Theme.of(context).colorScheme.primary,
       textInputAction: action,
       obscureText: obscureText,
       style: const TextStyle(
@@ -54,7 +54,7 @@ class MyTextFieldII extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      cursorColor: Theme.of(context).colorScheme.tertiary,
+      cursorColor: Theme.of(context).colorScheme.primary,
       textInputAction: action,
       obscureText: obscureText,
       style: const TextStyle(
@@ -72,10 +72,11 @@ class MyTextFieldII extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(
             width: 2,
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),
     );
   }
 }
+

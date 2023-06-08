@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:samba/components/drawer.dart';
 import 'package:samba/components/note_wall.dart';
-import 'package:samba/components/alert_dialog.dart';
+import 'package:samba/components/alert_dialogs.dart';
+import 'package:samba/pages/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,17 +40,22 @@ class _HomeState extends State<HomePage> {
     addNoteDialog(context, 'Añadir nota', textController, addNote);
   }
 
+  void goProfilePage() {
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ProfilePage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Samba'),
-        actions: [
-          IconButton(
-            onPressed: signOut,
-            icon: const Icon(Icons.logout),
-          ),
-        ],
+      ),
+      drawer: MyDrawer(
+        onProfileTap: goProfilePage,
+        onSignOutTap: signOut,
       ),
       body: SafeArea(
         child: Stack(
@@ -87,7 +94,6 @@ class _HomeState extends State<HomePage> {
                       },
                     ),
                   ),
-                  Text('Has iniciado sesión como: ${currentUser.email!}'),
                 ],
               ),
             ),

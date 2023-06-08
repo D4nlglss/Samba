@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,10 +41,19 @@ class _SignUpPageState extends State<SignUpPage> {
       return;
     }
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
+
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.email)
+          .set({
+        'username': emailController.text.split('@')[0],
+      });
+
       if (context.mounted) {
         Navigator.pop(context);
       }
@@ -127,7 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     MyTextField(
                         controller: passwordController,
-                        action: TextInputAction.done,
+                        action: TextInputAction.next,
                         hintText: 'Contraseña',
                         obscureText: true),
                     const SizedBox(

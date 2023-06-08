@@ -11,17 +11,18 @@ ThemeData lightTheme = ThemeData(
   ),
   colorScheme: ColorScheme.dark(
       background: Colors.orange.shade600,
-      primary: Colors.amber.shade400,
-      secondary: Colors.yellow.shade300,
-      tertiary: Colors.orange,
+      primary: Colors.amber[400]!,
+      secondary: Colors.amber[300]!,
+      tertiary: Colors.black26,
+      // tertiary: ,
       brightness: Brightness.light),
   scaffoldBackgroundColor: const Color(0xFFFDEEDC),
-  inputDecorationTheme: const InputDecorationTheme(
-    hintStyle: TextStyle(color: Colors.black26),
-    labelStyle: TextStyle(color: Colors.black),
+  inputDecorationTheme: InputDecorationTheme(
+    hintStyle: const TextStyle(color: Colors.black26),
+    labelStyle: const TextStyle(color: Colors.black),
     focusedBorder: UnderlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.orange,
+        color: Colors.amber[400]!,
       ),
     ),
   ),

@@ -45,6 +45,8 @@ class _SignInPageState extends State<SignInPage> {
         fail = 'El correo electrónico no es válido.';
       } else if (fail.contains('password is invalid')) {
         fail = 'La contraseña no es correcta.';
+      } else if (fail.contains('no user record corresponding')) {
+        fail = 'No existe un usuario con ese correo electrónico';
       }
       displayMessage(fail, context, Colors.redAccent);
     }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 ThemeData darkTheme = ThemeData(
-  appBarTheme: const AppBarTheme(color: Color(0xFF3C4480)),
-  canvasColor: const Color(0xFF3C4480),
+  appBarTheme: const AppBarTheme(color: Color(0xFF352F44)),
+  canvasColor: const Color(0xFF352F44),
   textTheme: const TextTheme(
     displaySmall: TextStyle(
       color: Colors.white,
@@ -10,20 +10,20 @@ ThemeData darkTheme = ThemeData(
     ),
   ),
   colorScheme: ColorScheme.dark(
-      background: const Color(0xFF8B2F97),
-      primary: const Color(0xFFCF56A1),
+      background: const Color(0xFF591F61),
+      primary: Colors.pink[800]!,
       secondary: Colors.pink.shade300,
-      tertiary: Colors.purple,
+      tertiary: Colors.white30,
       brightness: Brightness.dark),
-  scaffoldBackgroundColor: const Color(0xFF37306B),
-  inputDecorationTheme: const InputDecorationTheme(
-    hintStyle: TextStyle(color: Colors.white70),
-    labelStyle: TextStyle(color: Colors.white),
+  scaffoldBackgroundColor: const Color(0xFF2A2438),
+  inputDecorationTheme: InputDecorationTheme(
+    hintStyle: const TextStyle(color: Colors.white30),
+    labelStyle: const TextStyle(color: Colors.white),
     focusedBorder: UnderlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.purple,
+        color: Colors.pink[800]!,
       ),
     ),
   ),
-  primarySwatch: Colors.purple,
+  primarySwatch: Colors.deepPurple,
 );

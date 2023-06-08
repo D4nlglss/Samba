@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:samba/pages/login_page.dart';
+import 'package:samba/pages/sign_in.dart';
 import 'package:samba/pages/restore_page.dart';
-import 'package:samba/pages/sign_in_page.dart';
+import 'package:samba/pages/sign_up_page.dart';
 
 class ChangeAuthPage extends StatefulWidget {
   const ChangeAuthPage({super.key});
