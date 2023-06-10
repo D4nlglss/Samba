@@ -5,9 +5,11 @@ import 'package:samba/components/drawer.dart';
 import 'package:samba/components/note_wall.dart';
 import 'package:samba/components/alert_dialogs.dart';
 import 'package:samba/pages/manage_categories.dart';
+import 'package:samba/pages/manage_friends.dart';
 import 'package:samba/pages/profile_page.dart';
 
 //TODO
+//* Implemtar botonera notas
 //* Compartir: Implementar amigos igual que las categorías
 //? Categorías: borrar categorías
 //! Importar/Exportar: sin comentarios
@@ -58,6 +60,11 @@ class _HomeState extends State<HomePage> {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const ManageCategories()));
   }
+  void goManageFriendsPage() {
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const ManageFriends()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +77,7 @@ class _HomeState extends State<HomePage> {
         onProfileTap: goProfilePage,
         onSignOutTap: signOut,
         onManageCategoriesTap: goManageCategoriesPage,
+        onManageFriendsTap: goManageFriendsPage,
       ),
       body: SafeArea(
         child: Stack(

@@ -5,8 +5,9 @@ class MyDrawer extends StatelessWidget {
   final void Function()? onProfileTap;
   final void Function()? onSignOutTap;
   final void Function()? onManageCategoriesTap;
+  final void Function()? onManageFriendsTap;
   const MyDrawer(
-      {super.key, required this.onProfileTap, required this.onSignOutTap, required this.onManageCategoriesTap});
+      {super.key, required this.onProfileTap, required this.onSignOutTap, required this.onManageCategoriesTap, required this.onManageFriendsTap});
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +46,11 @@ class MyDrawer extends StatelessWidget {
                 icon: Icons.person,
                 text: 'C A T E G O R Í A S',
                 onTap: onManageCategoriesTap,
+              ),
+              MyListTile(
+                icon: Icons.person,
+                text: 'A M I G O S',
+                onTap: onManageFriendsTap,
               ),
             ],
           ),
