@@ -4,8 +4,9 @@ import 'package:samba/components/list_tile.dart';
 class MyDrawer extends StatelessWidget {
   final void Function()? onProfileTap;
   final void Function()? onSignOutTap;
+  final void Function()? onManageCategoriesTap;
   const MyDrawer(
-      {super.key, required this.onProfileTap, required this.onSignOutTap});
+      {super.key, required this.onProfileTap, required this.onSignOutTap, required this.onManageCategoriesTap});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,11 @@ class MyDrawer extends StatelessWidget {
                 icon: Icons.person,
                 text: 'P E R F I L',
                 onTap: onProfileTap,
+              ),
+              MyListTile(
+                icon: Icons.person,
+                text: 'C A T E G O R Í A S',
+                onTap: onManageCategoriesTap,
               ),
             ],
           ),

@@ -8,6 +8,11 @@ ThemeData darkTheme = ThemeData(
       color: Colors.white,
       fontSize: 14,
     ),
+    displayMedium: TextStyle(
+      color: Colors.white,
+      fontSize: 20,
+      fontWeight: FontWeight.bold
+    ),
   ),
   colorScheme: ColorScheme.dark(
       background: const Color(0xFF591F61),

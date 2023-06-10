@@ -8,6 +8,8 @@ ThemeData lightTheme = ThemeData(
       color: Colors.black,
       fontSize: 14,
     ),
+    displayMedium: TextStyle(
+        color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
   ),
   colorScheme: ColorScheme.dark(
       background: Colors.orange.shade600,

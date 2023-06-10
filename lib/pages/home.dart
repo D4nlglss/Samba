@@ -4,8 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:samba/components/drawer.dart';
 import 'package:samba/components/note_wall.dart';
 import 'package:samba/components/alert_dialogs.dart';
+import 'package:samba/pages/manage_categories.dart';
 import 'package:samba/pages/profile_page.dart';
 
+//TODO
+//* Compartir: Implementar amigos igual que las categorías
+//? Categorías: borrar categorías
+//! Importar/Exportar: sin comentarios
+//* Notas: Pantalla para editar las notas
+//* Notas: Poder borrar notas
+//* Usuario: Poder borrar la cuenta
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -43,7 +51,12 @@ class _HomeState extends State<HomePage> {
   void goProfilePage() {
     Navigator.pop(context);
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ProfilePage()));
+        context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+  }
+  void goManageCategoriesPage() {
+    Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const ManageCategories()));
   }
 
   @override
@@ -56,6 +69,7 @@ class _HomeState extends State<HomePage> {
       drawer: MyDrawer(
         onProfileTap: goProfilePage,
         onSignOutTap: signOut,
+        onManageCategoriesTap: goManageCategoriesPage,
       ),
       body: SafeArea(
         child: Stack(
@@ -77,9 +91,9 @@ class _HomeState extends State<HomePage> {
                                 final note = snapshot.data!.docs[index];
                                 return NoteWall(
                                     title: note['title'],
+                                    noteId: note.id,
                                     body: note['body'],
                                     owner: note['owner'],
-                                    category: note['category'],
                                     color: note['color'],
                                     textColor: note['textColor']);
                               });

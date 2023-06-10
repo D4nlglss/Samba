@@ -85,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Future<void> editField(String field) async {
+  Future<void> editUsername() async {
     String newValue = "";
     await showDialog(
       context: context,
@@ -94,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        title: Text('Editar $field'),
+        title: const Text('Editar nombre de usuario'),
         content: TextField(
           autofocus: true,
           cursorColor: Theme.of(context).colorScheme.primary,
@@ -146,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     //? Cambiar valor
     if (newValue.trim().isNotEmpty) {
-      await usersCollection.doc(currentUser.email).update({field: newValue});
+      await usersCollection.doc(currentUser.email).update({'username': newValue});
     }
   }
 
@@ -182,17 +182,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   MyTextBox(
                     text: userData['username'],
                     sectionName: 'nombre de usuario',
-                    onPressed: () => editField('username'),
+                    onPressed: () => editUsername(),
                   ),
                   MyTextBox(
                     text: '*******',
                     sectionName: 'contraseña',
                     onPressed: () => changePwdDialog(),
-                  ),
-                  const SizedBox(height: 50),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 25),
-                    child: Text('Notas'),
                   ),
                 ],
               );

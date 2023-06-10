@@ -52,6 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
           .doc(userCredential.user!.email)
           .set({
         'username': emailController.text.split('@')[0],
+        'categories':[],
       });
 
       if (context.mounted) {
