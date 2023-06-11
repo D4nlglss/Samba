@@ -43,12 +43,12 @@ class MyDrawer extends StatelessWidget {
                 onTap: onProfileTap,
               ),
               MyListTile(
-                icon: Icons.person,
+                icon: Icons.bookmarks_outlined,
                 text: 'C A T E G O R Í A S',
                 onTap: onManageCategoriesTap,
               ),
               MyListTile(
-                icon: Icons.person,
+                icon: Icons.group,
                 text: 'A M I G O S',
                 onTap: onManageFriendsTap,
               ),

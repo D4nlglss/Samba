@@ -20,7 +20,8 @@ class _ManageCategoriesState extends State<ManageCategories> {
         .collection('users')
         .doc(currentUser.email)
         .collection('categories')
-        .add({
+        .doc(title)
+        .set({
       'title': title,
       'color': color,
     });
@@ -86,6 +87,97 @@ class _ManageCategoriesState extends State<ManageCategories> {
         });
   }
 
+  void confirmDeleteCategory(BuildContext context, String title, Color color) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).canvasColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            title: const Center(
+              child: Text('Borrar Categoría'),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  '¿Eliminar ésta categoría?',
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      color: color, borderRadius: BorderRadius.circular(10)),
+                  margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
+                  padding: const EdgeInsets.only(top: 25, bottom: 25),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    child: Text(title,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(color: Colors.white)),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Center(
+                  child: MaterialButton(
+                    minWidth: MediaQuery.of(context).size.width * 0.55,
+                    height: MediaQuery.of(context).size.width * 0.13,
+                    color: Theme.of(context).colorScheme.background,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      deleteCategory(title);
+                    },
+                    child: const Icon(Icons.check),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  Color getColor(String color) {
+    Color usableColor = Theme.of(context).canvasColor;
+    if (!color.contains('Theme')) {
+      String? convertedColor = color.split('(0x')[1].split(')')[0];
+      int value = int.parse(convertedColor, radix: 16);
+      usableColor = Color(value);
+    }
+    return usableColor;
+  }
+
+  void deleteCategory(String title) async {
+    // Notas del usuario
+    final userNotes = await FirebaseFirestore.instance
+        .collection('notes')
+        .where('owner', isEqualTo: currentUser.email)
+        .get();
+
+    for (var note in userNotes.docs) {
+      // Categorías de la nota
+      await FirebaseFirestore.instance
+          .collection('notes')
+          .doc(note.id)
+          .collection('categories')
+          .doc(title)
+          .delete();
+    }
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.email)
+        .collection('categories')
+        .doc(title)
+        .delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,6 +213,12 @@ class _ManageCategoriesState extends State<ManageCategories> {
                                 return MyCategory(
                                   title: categoryData['title'],
                                   color: categoryData['color'],
+                                  onTap: () {
+                                    confirmDeleteCategory(
+                                        context,
+                                        categoryData['title'],
+                                        getColor(categoryData['color']));
+                                  },
                                   inNote: false,
                                 );
                               }).toList(),

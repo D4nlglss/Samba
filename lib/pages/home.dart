@@ -3,19 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:samba/components/drawer.dart';
 import 'package:samba/components/note_wall.dart';
-import 'package:samba/components/alert_dialogs.dart';
+import 'package:samba/components/alert_dialog.dart';
 import 'package:samba/pages/manage_categories.dart';
 import 'package:samba/pages/manage_friends.dart';
 import 'package:samba/pages/profile_page.dart';
 
 //TODO
-//* Implemtar botonera notas
-//* Compartir: Implementar amigos igual que las categorías
-//? Categorías: borrar categorías
 //! Importar/Exportar: sin comentarios
 //* Notas: Pantalla para editar las notas
-//* Notas: Poder borrar notas
-//* Usuario: Poder borrar la cuenta
+//* Notas: Buscar
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

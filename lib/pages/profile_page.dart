@@ -146,8 +146,128 @@ class _ProfilePageState extends State<ProfilePage> {
 
     //? Cambiar valor
     if (newValue.trim().isNotEmpty) {
-      await usersCollection.doc(currentUser.email).update({'username': newValue});
+      await usersCollection
+          .doc(currentUser.email)
+          .update({'username': newValue});
     }
+  }
+
+  void confirmDeleteAccount() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).canvasColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            title: const Center(
+              child: Text('Borrar Cuenta'),
+            ),
+            content: Text(
+              '¡Estás a punto de eliminar tu cuenta!\nEsta acción no se puede deshacer',
+              style: TextStyle(
+                color: Colors.red[400],
+              ),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Center(
+                  child: MaterialButton(
+                    minWidth: MediaQuery.of(context).size.width * 0.55,
+                    height: MediaQuery.of(context).size.width * 0.13,
+                    color: Theme.of(context).colorScheme.background,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    onPressed: () {
+                      deleteAccount();
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('¡Sí, quiero borrar mi cuenta!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white)),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
+  void deleteAccount() async {
+    // Notas del usuario
+    final userNotes = await FirebaseFirestore.instance
+        .collection('notes')
+        .where('owner', isEqualTo: currentUser.email)
+        .get();
+
+    // Borrar notas
+    for (var note in userNotes.docs) {
+      // Categorías de la nota
+      final categories = await FirebaseFirestore.instance
+          .collection('notes')
+          .doc(note.id)
+          .collection('categories')
+          .get();
+      // Borrar categorías de la nota
+      for (var category in categories.docs) {
+        await FirebaseFirestore.instance
+            .collection('notes')
+            .doc(note.id)
+            .collection('categories')
+            .doc(category.id)
+            .delete();
+      }
+      await FirebaseFirestore.instance
+          .collection('notes')
+          .doc(note.id)
+          .delete();
+    }
+    // Amigos del usuario
+    final userFriends = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.email)
+        .collection('friends')
+        .get();
+
+    // Borrar amigos del usuario
+    for (var friend in userFriends.docs) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.email)
+          .collection('friends')
+          .doc(friend.id)
+          .delete();
+    }
+    // Categorías del usuario
+    final userCategories = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.email)
+        .collection('categories')
+        .get();
+
+    // Borrar categorias del usuario
+    for (var category in userCategories.docs) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.email)
+          .collection('categories')
+          .doc(category.id)
+          .delete();
+    }
+
+    // Borrar usuario
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.email)
+        .delete();
+
+    FirebaseAuth.instance.currentUser!.delete();
+    FirebaseAuth.instance.signOut();
   }
 
   @override
@@ -177,7 +297,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 50),
                   const Padding(
                     padding: EdgeInsets.only(left: 25),
-                    child: Text('Detalles de mi cuenta'),
+                    child: Text('Detalles de la cuenta'),
                   ),
                   MyTextBox(
                     text: userData['username'],
@@ -188,6 +308,27 @@ class _ProfilePageState extends State<ProfilePage> {
                     text: '*******',
                     sectionName: 'contraseña',
                     onPressed: () => changePwdDialog(),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.25,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: MaterialButton(
+                      minWidth: MediaQuery.of(context).size.width * 0.55,
+                      height: MediaQuery.of(context).size.width * 0.22,
+                      color: Theme.of(context).canvasColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      onPressed: confirmDeleteAccount,
+                      child: Text('Eliminar cuenta',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.red[400],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
+                    ),
                   ),
                 ],
               );

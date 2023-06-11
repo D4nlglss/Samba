@@ -27,16 +27,19 @@ class MyCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (inNote) {
-      return Container(
-        decoration: BoxDecoration(
-          color: getCategoryColor(context),
-          borderRadius: BorderRadius.circular(7),
-        ),
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
-          child: Center(
-            child: Text(title, style: const TextStyle(color: Colors.white)),
+      return Padding(
+        padding: const EdgeInsets.only(left: 2, right: 2),
+        child: Container(
+          decoration: BoxDecoration(
+            color: getCategoryColor(context),
+            borderRadius: BorderRadius.circular(7),
+          ),
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+            child: Center(
+              child: Text(title, style: const TextStyle(color: Colors.white)),
+            ),
           ),
         ),
       );

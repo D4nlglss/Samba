@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:samba/components/friends.dart';
-import 'package:samba/components/my_category.dart';
+import 'package:samba/components/snackbar.dart';
 import 'package:samba/components/text_field.dart';
 
 class ManageFriends extends StatefulWidget {
@@ -16,6 +15,35 @@ class ManageFriends extends StatefulWidget {
 class _ManageCategoriesState extends State<ManageFriends> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
+  void findFriend(String email, BuildContext context) async {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: ((context) => const Center(child: CircularProgressIndicator())),
+    );
+
+    final friend =
+        await FirebaseFirestore.instance.collection('users').doc(email).get();
+    if (friend.exists && currentUser.email != email) {
+      addFriend(email);
+    }
+    if (email == currentUser.email) {
+      // ignore: use_build_context_synchronously
+      displayMessage(
+          'Puede ser normal no tener amigos pero añadirse a uno mismo es un poco triste',
+          context,
+          Colors.redAccent);
+    }
+    if (!friend.exists) {
+      // ignore: use_build_context_synchronously
+      displayMessage('No existe ningún usuario con esa dirección de correo',
+          context, Colors.redAccent);
+    }
+    if (context.mounted) {
+      Navigator.pop(context);
+    }
+  }
+
   void addFriend(String email) {
     FirebaseFirestore.instance
         .collection('users')
@@ -25,6 +53,15 @@ class _ManageCategoriesState extends State<ManageFriends> {
         .set({
       'email': email,
     });
+  }
+
+  void deleteFriend(String email) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUser.email)
+        .collection('friends')
+        .doc(email)
+        .delete();
   }
 
   void addFriendDialog(BuildContext context) {
@@ -61,7 +98,7 @@ class _ManageCategoriesState extends State<ManageFriends> {
                           borderRadius: BorderRadius.circular(7),
                         ),
                         onPressed: () {
-                          addFriend(controller.text);
+                          findFriend(controller.text, context);
                           Navigator.pop(context);
                         },
                         child: const Icon(Icons.add_outlined),
@@ -75,12 +112,63 @@ class _ManageCategoriesState extends State<ManageFriends> {
         });
   }
 
+  void confirmDeleteFriend(BuildContext context, String email) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).canvasColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            title: const Center(
+              child: Text('Eliminar Amigo'),
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  '¿Quieres eliminar a este amigo?',
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
+                  padding: const EdgeInsets.only(top: 25, bottom: 25),
+                  child: Text(email,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(color: Colors.redAccent)),
+                ),
+              ],
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: Center(
+                  child: MaterialButton(
+                    minWidth: MediaQuery.of(context).size.width * 0.55,
+                    height: MediaQuery.of(context).size.width * 0.13,
+                    color: Theme.of(context).colorScheme.background,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      deleteFriend(email);
+                    },
+                    child: const Icon(Icons.check),
+                  ),
+                ),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Tus Categorías'),
+        title: const Text('Tus Amigos'),
       ),
       body: SafeArea(
         child: Stack(
@@ -108,9 +196,11 @@ class _ManageCategoriesState extends State<ManageFriends> {
                                 final friendData =
                                     doc.data() as Map<String, dynamic>;
                                 return Friends(
-                                  email: friendData['email'],
-                                  inNote: false,
-                                );
+                                    email: friendData['email'],
+                                    onTap: () {
+                                      confirmDeleteFriend(
+                                          context, friendData['email']);
+                                    });
                               }).toList(),
                             ),
                           );

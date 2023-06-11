@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
   appBarTheme: const AppBarTheme(color: Color(0xFFF4E3CF)),
+  iconTheme: IconThemeData(
+    color: Colors.grey[900],
+  ),
   canvasColor: const Color(0xFFF4E3CF),
   textTheme: const TextTheme(
     displaySmall: TextStyle(
