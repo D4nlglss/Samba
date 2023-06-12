@@ -9,9 +9,10 @@ import 'package:samba/pages/manage_friends.dart';
 import 'package:samba/pages/profile_page.dart';
 
 //TODO
-//! Importar/Exportar: sin comentarios
+//! Importar/Exportar: añadir opciñon al speed dial para crear archivo con el cuerpo de la nota
+//! y el título como nombre del archivo.txt. Añadir menú en la appbar para importar un archivo.txt.
 //* Notas: Pantalla para editar las notas
-//* Notas: Buscar
+//* Notas: Buscar (speed dial con botón que invoca un dialog para buscar titulo y otro para filtrar por categoría)
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

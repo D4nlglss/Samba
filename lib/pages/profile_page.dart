@@ -260,6 +260,13 @@ class _ProfilePageState extends State<ProfilePage> {
           .delete();
     }
 
+    // Borrar usuario de las listas de amigos
+    final users = await FirebaseFirestore.instance.collection('users').get();
+
+    for (var user in users.docs){
+      await FirebaseFirestore.instance.collection('users').doc(user.id).collection('friends').doc(currentUser.email).delete();
+    }
+
     // Borrar usuario
     await FirebaseFirestore.instance
         .collection('users')

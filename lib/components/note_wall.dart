@@ -5,7 +5,7 @@ import 'package:samba/components/my_category.dart';
 import 'package:samba/components/snackbar.dart';
 import 'package:samba/components/speed_dial.dart';
 
-import 'friends.dart';
+import 'friend.dart';
 
 class NoteWall extends StatefulWidget {
   final String title;
@@ -263,7 +263,7 @@ class _NoteWallState extends State<NoteWall> {
                       child: ListView(
                         children: snapshot.data!.docs.map((doc) {
                           final friendData = doc.data() as Map<String, dynamic>;
-                          return Friends(
+                          return Friend(
                               email: friendData['email'],
                               onTap: () {
                                 shareNote(friendData['email']);

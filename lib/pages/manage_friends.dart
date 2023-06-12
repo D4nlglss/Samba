@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:samba/components/friends.dart';
+import 'package:samba/components/friend.dart';
 import 'package:samba/components/snackbar.dart';
 import 'package:samba/components/text_field.dart';
 
@@ -195,7 +195,7 @@ class _ManageCategoriesState extends State<ManageFriends> {
                               children: snapshot.data!.docs.map((doc) {
                                 final friendData =
                                     doc.data() as Map<String, dynamic>;
-                                return Friends(
+                                return Friend(
                                     email: friendData['email'],
                                     onTap: () {
                                       confirmDeleteFriend(
