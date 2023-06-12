@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class MySpeedDial extends StatelessWidget {
+  // ignore: prefer_typing_uninitialized_variables
+  final color;
   final Function() edit;
   final Function() delete;
   final Function() share;
-  const MySpeedDial({
-    super.key,
-    required this.edit,
-    required this.delete,
-    required this.share
-  });
+  const MySpeedDial(
+      {super.key,
+      required this.color,
+      required this.edit,
+      required this.delete,
+      required this.share});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class MySpeedDial extends StatelessWidget {
       useRotationAnimation: true,
       direction: SpeedDialDirection.down,
       iconTheme: IconThemeData(
-        color: Theme.of(context).iconTheme.color,
+        color: color,
         size: 40,
       ),
       backgroundColor: Colors.transparent,

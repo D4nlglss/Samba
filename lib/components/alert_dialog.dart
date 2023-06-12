@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:samba/components/text_field.dart';
 
-void addNoteDialog(BuildContext context, String message,
-    TextEditingController textController, Function() onPressed) {
+void myDialog(BuildContext context, String message,
+    TextEditingController textController, Function() onPressed, Icon icon) {
   showDialog(
       context: context,
       builder: (context) {
@@ -31,9 +31,8 @@ void addNoteDialog(BuildContext context, String message,
                   ),
                   onPressed: () {
                     onPressed();
-                    Navigator.pop(context);
                   },
-                  child: const Icon(Icons.add_outlined),
+                  child: icon,
                 ),
               ),
             ),

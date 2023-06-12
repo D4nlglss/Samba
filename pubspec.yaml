@@ -48,6 +48,18 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
   flutter_launcher_icons:
+  flutter_native_splash:
+
+
+flutter_native_splash:
+#dart run flutter_native_splash:create
+  #image
+  image: assets/icons/icon.png
+  #bg color
+  color: "#ffffff"
+  #bg image
+  #background_image: assets/images/...
+
 
 flutter_launcher_icons:
   android: true

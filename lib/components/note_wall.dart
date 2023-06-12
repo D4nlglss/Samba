@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:samba/components/my_category.dart';
 import 'package:samba/components/snackbar.dart';
 import 'package:samba/components/speed_dial.dart';
+import 'package:samba/pages/edit_page.dart';
 
 import 'friend.dart';
 
@@ -211,7 +212,19 @@ class _NoteWallState extends State<NoteWall> {
         });
   }
 
-  void goToEditPage() {}
+  void goToEditPage() {
+    Navigator.pop(context);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => EditPage(
+                title: widget.title,
+                noteId: widget.noteId,
+                body: widget.body,
+                owner: widget.owner,
+                color: widget.color,
+                textColor: widget.textColor)));
+  }
 
   void deleteNote() async {
     final categoriesDoc = await FirebaseFirestore.instance
@@ -295,8 +308,8 @@ class _NoteWallState extends State<NoteWall> {
         context: context,
         builder: (context) {
           return Padding(
-            padding:
-                const EdgeInsets.only(top: 80, bottom: 80, left: 30, right: 30),
+            padding: const EdgeInsets.only(
+                top: 80, bottom: 200, left: 30, right: 30),
             child: Container(
               decoration: BoxDecoration(
                   color: getNoteColor(context),
@@ -310,6 +323,7 @@ class _NoteWallState extends State<NoteWall> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         MySpeedDial(
+                            color: getTextColor(context),
                             edit: goToEditPage,
                             delete: confirmDeleteDialog,
                             share: shareNoteDialog),
@@ -318,13 +332,13 @@ class _NoteWallState extends State<NoteWall> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only(left: 50, right: 50, bottom: 50),
+                        const EdgeInsets.only(left: 40, right: 50, bottom: 40),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         const SizedBox(
-                          height: 100,
+                          height: 80,
                         ),
                         Center(
                           child: Text(
@@ -339,7 +353,7 @@ class _NoteWallState extends State<NoteWall> {
                           height: 40,
                         ),
                         SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.5,
+                          height: MediaQuery.of(context).size.height * 0.4,
                           width: MediaQuery.of(context).size.width * 0.7,
                           child: SingleChildScrollView(
                             child: Column(
@@ -387,17 +401,25 @@ class _NoteWallState extends State<NoteWall> {
             ),
             Row(
               children: [
-                const Text('Categorías:', style: TextStyle(fontSize: 16)),
+                Text('Categorías:',
+                    style:
+                        TextStyle(fontSize: 16, color: getTextColor(context))),
                 const Expanded(child: SizedBox()),
                 IconButton(
                   color: Theme.of(context).colorScheme.tertiary,
                   onPressed: showRemoveCategoryDialog,
-                  icon: const Icon(Icons.remove),
+                  icon: Icon(
+                    Icons.remove,
+                    color: getTextColor(context),
+                  ),
                 ),
                 IconButton(
                   color: Theme.of(context).colorScheme.tertiary,
                   onPressed: showCategoryDialog,
-                  icon: const Icon(Icons.add),
+                  icon: Icon(
+                    Icons.add,
+                    color: getTextColor(context),
+                  ),
                 ),
               ],
             ),
