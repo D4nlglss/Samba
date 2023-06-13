@@ -12,9 +12,11 @@ class ManageCategories extends StatefulWidget {
   State<ManageCategories> createState() => _ManageCategoriesState();
 }
 
+// Pantalla de administración de categorías
 class _ManageCategoriesState extends State<ManageCategories> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
+  // Crear categoría
   void addCategory(String title, String color) {
     FirebaseFirestore.instance
         .collection('users')
@@ -27,6 +29,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
     });
   }
 
+  // Diálogo para crear una categoría
   void addCategoryDialog(BuildContext context) {
     var controller = TextEditingController();
     Color color = Theme.of(context).canvasColor;
@@ -36,7 +39,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
           return AlertDialog(
             backgroundColor: Theme.of(context).canvasColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(8),
             ),
             title: const Center(child: Text('Crear categoría')),
             content: SingleChildScrollView(
@@ -70,7 +73,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
                         height: MediaQuery.of(context).size.width * 0.13,
                         color: Theme.of(context).colorScheme.background,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         onPressed: () {
                           addCategory(controller.text, color.toString());
@@ -87,6 +90,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
         });
   }
 
+  // Confirmar borrado de categoría
   void confirmDeleteCategory(BuildContext context, String title, Color color) {
     showDialog(
         context: context,
@@ -94,7 +98,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
           return AlertDialog(
             backgroundColor: Theme.of(context).canvasColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(8),
             ),
             title: const Center(
               child: Text('Borrar Categoría'),
@@ -107,7 +111,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                      color: color, borderRadius: BorderRadius.circular(10)),
+                      color: color, borderRadius: BorderRadius.circular(8)),
                   margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
                   padding: const EdgeInsets.only(top: 25, bottom: 25),
                   child: Padding(
@@ -128,7 +132,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
                     height: MediaQuery.of(context).size.width * 0.13,
                     color: Theme.of(context).colorScheme.background,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -143,6 +147,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
         });
   }
 
+  // Preparar color de la categoría
   Color getColor(String color) {
     Color usableColor = Theme.of(context).canvasColor;
     if (!color.contains('Theme')) {
@@ -153,6 +158,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
     return usableColor;
   }
 
+  // Borrar categoría
   void deleteCategory(String title) async {
     // Notas del usuario
     final userNotes = await FirebaseFirestore.instance
@@ -192,39 +198,42 @@ class _ManageCategoriesState extends State<ManageCategories> {
               child: Column(
                 children: [
                   Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('users')
-                            .doc(currentUser.email)
-                            .collection('categories')
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.035,
-                            child: ListView(
-                              children: snapshot.data!.docs.map((doc) {
-                                final categoryData =
-                                    doc.data() as Map<String, dynamic>;
-                                return MyCategory(
-                                  title: categoryData['title'],
-                                  color: categoryData['color'],
-                                  onTap: () {
-                                    confirmDeleteCategory(
-                                        context,
-                                        categoryData['title'],
-                                        getColor(categoryData['color']));
-                                  },
-                                  inNote: false,
+                    child:
+                        // Se obtienen todas las categorías
+                        StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(currentUser.email)
+                                .collection('categories')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
                                 );
-                              }).toList(),
-                            ),
-                          );
-                        }),
+                              }
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.035,
+                                child: ListView(
+                                  children: snapshot.data!.docs.map((doc) {
+                                    final categoryData =
+                                        doc.data() as Map<String, dynamic>;
+                                    return MyCategory(
+                                      title: categoryData['title'],
+                                      color: categoryData['color'],
+                                      onTap: () {
+                                        confirmDeleteCategory(
+                                            context,
+                                            categoryData['title'],
+                                            getColor(categoryData['color']));
+                                      },
+                                      inNote: false,
+                                    );
+                                  }).toList(),
+                                ),
+                              );
+                            }),
                   ),
                 ],
               ),

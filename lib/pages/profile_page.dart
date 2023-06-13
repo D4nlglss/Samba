@@ -12,10 +12,12 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
+// Pantalla de gestión de perfil
 class _ProfilePageState extends State<ProfilePage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final usersCollection = FirebaseFirestore.instance.collection('users');
 
+  // Confirmar cambio de contraseña
   void changePwdDialog() {
     showDialog(
       context: context,
@@ -33,7 +35,6 @@ class _ProfilePageState extends State<ProfilePage> {
           textAlign: TextAlign.center,
         ),
         actions: [
-          //? Aceptar
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: Center(
@@ -42,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: MediaQuery.of(context).size.width * 0.13,
                 color: Theme.of(context).colorScheme.background,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -60,6 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  // Restablecer contraseña
   void restorePwd() async {
     String fail = '';
     showDialog(
@@ -85,6 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  // Editar nombre de usuario
   Future<void> editUsername() async {
     String newValue = "";
     await showDialog(
@@ -122,7 +125,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
         actions: [
-          //? Aceptar
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: Center(
@@ -131,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: MediaQuery.of(context).size.width * 0.13,
                 color: Theme.of(context).colorScheme.background,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(7),
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(newValue);
@@ -144,7 +146,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
 
-    //? Cambiar valor
     if (newValue.trim().isNotEmpty) {
       await usersCollection
           .doc(currentUser.email)
@@ -152,6 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  // Confirmar eliminación de la cuenta
   void confirmDeleteAccount() {
     showDialog(
         context: context,
@@ -159,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
           return AlertDialog(
             backgroundColor: Theme.of(context).canvasColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(8),
             ),
             title: const Center(
               child: Text('Borrar Cuenta'),
@@ -179,7 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: MediaQuery.of(context).size.width * 0.13,
                     color: Theme.of(context).colorScheme.background,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     onPressed: () {
                       deleteAccount();
@@ -198,6 +200,9 @@ class _ProfilePageState extends State<ProfilePage> {
         });
   }
 
+  // Borrar cuenta
+  //? Se borran todas las referencias y el propio usuario de firestore
+  //? y luego de firebase auth
   void deleteAccount() async {
     // Notas del usuario
     final userNotes = await FirebaseFirestore.instance
@@ -263,8 +268,13 @@ class _ProfilePageState extends State<ProfilePage> {
     // Borrar usuario de las listas de amigos
     final users = await FirebaseFirestore.instance.collection('users').get();
 
-    for (var user in users.docs){
-      await FirebaseFirestore.instance.collection('users').doc(user.id).collection('friends').doc(currentUser.email).delete();
+    for (var user in users.docs) {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.id)
+          .collection('friends')
+          .doc(currentUser.email)
+          .delete();
     }
 
     // Borrar usuario
@@ -273,6 +283,7 @@ class _ProfilePageState extends State<ProfilePage> {
         .doc(currentUser.email)
         .delete();
 
+    // Eliminar usuario de FirebaseAuth
     FirebaseAuth.instance.currentUser!.delete();
     FirebaseAuth.instance.signOut();
   }
@@ -326,7 +337,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       height: MediaQuery.of(context).size.width * 0.22,
                       color: Theme.of(context).canvasColor,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       onPressed: confirmDeleteAccount,
                       child: Text('Eliminar cuenta',

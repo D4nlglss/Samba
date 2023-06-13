@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:samba/components/text_field.dart';
 
+// Diálogo personalizado
 void myDialog(BuildContext context, String message,
     TextEditingController textController, Function() onPressed, Icon icon) {
   showDialog(
@@ -9,7 +10,7 @@ void myDialog(BuildContext context, String message,
         return AlertDialog(
           backgroundColor: Theme.of(context).canvasColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(8),
           ),
           title: Center(child: Text(message)),
           content: MyTextFieldII(
@@ -27,7 +28,7 @@ void myDialog(BuildContext context, String message,
                   height: MediaQuery.of(context).size.width * 0.13,
                   color: Theme.of(context).colorScheme.background,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(7),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   onPressed: () {
                     onPressed();
@@ -40,4 +41,3 @@ void myDialog(BuildContext context, String message,
         );
       });
 }
-

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:samba/components/list_tile.dart';
 
+// Menú lateral
 class MyDrawer extends StatelessWidget {
   final void Function()? onProfileTap;
   final void Function()? onSignOutTap;

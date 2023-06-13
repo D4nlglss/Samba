@@ -16,11 +16,13 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
+// Pantalla de registro
 class _SignUpPageState extends State<SignUpPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+  // Registrarse
   void signUp() async {
     String fail = '';
     showDialog(
@@ -52,7 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
           .doc(userCredential.user!.email)
           .set({
         'username': emailController.text.split('@')[0],
-        'categories':[],
+        'categories': [],
       });
 
       if (context.mounted) {

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+// Widget de amigos
 class Friend extends StatelessWidget {
   final String email;
   final Function()? onTap;
@@ -20,14 +21,14 @@ class Friend extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
-            borderRadius: BorderRadius.circular(10)),
+            borderRadius: BorderRadius.circular(8)),
         margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
         padding: const EdgeInsets.only(top: 25, bottom: 25),
         child: Column(
           children: [
             FutureBuilder<String>(
               future:
-                  _getFriendName(), // a previously-obtained Future<String> or null
+                  _getFriendName(),
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                 if (snapshot.hasData) {
                   return Text('${snapshot.data}',

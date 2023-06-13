@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
+// Botonera en la vista previa de las notas
 class MySpeedDial extends StatelessWidget {
   // ignore: prefer_typing_uninitialized_variables
   final color;
@@ -19,6 +20,7 @@ class MySpeedDial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    // Botón principal
     return SpeedDial(
       buttonSize: Size(size.width * 0.04, size.height * 0.04),
       icon: Icons.settings,
@@ -34,6 +36,7 @@ class MySpeedDial extends StatelessWidget {
       overlayOpacity: 0.4,
       spacing: 30,
       spaceBetweenChildren: 6,
+      // Botones desplegados
       children: [
         SpeedDialChild(
             child: Icon(Icons.edit,

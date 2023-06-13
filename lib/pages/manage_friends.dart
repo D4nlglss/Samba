@@ -9,12 +9,14 @@ class ManageFriends extends StatefulWidget {
   const ManageFriends({super.key});
 
   @override
-  State<ManageFriends> createState() => _ManageCategoriesState();
+  State<ManageFriends> createState() => _ManageFriendsState();
 }
 
-class _ManageCategoriesState extends State<ManageFriends> {
+// Pantalla de administración de amigos
+class _ManageFriendsState extends State<ManageFriends> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
+// Se obtiene el nombre de usuario del amigo
   void findFriend(String email, BuildContext context) async {
     showDialog(
       barrierDismissible: false,
@@ -44,6 +46,7 @@ class _ManageCategoriesState extends State<ManageFriends> {
     }
   }
 
+  // Añadir amigo
   void addFriend(String email) {
     FirebaseFirestore.instance
         .collection('users')
@@ -55,6 +58,7 @@ class _ManageCategoriesState extends State<ManageFriends> {
     });
   }
 
+  // Eliminar amigo
   void deleteFriend(String email) async {
     await FirebaseFirestore.instance
         .collection('users')
@@ -64,6 +68,7 @@ class _ManageCategoriesState extends State<ManageFriends> {
         .delete();
   }
 
+  // Diálogo para añadir amigo
   void addFriendDialog(BuildContext context) {
     var controller = TextEditingController();
     showDialog(
@@ -72,7 +77,7 @@ class _ManageCategoriesState extends State<ManageFriends> {
           return AlertDialog(
             backgroundColor: Theme.of(context).canvasColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(8),
             ),
             title: const Center(child: Text('Añadir amigo')),
             content: SingleChildScrollView(
@@ -95,7 +100,7 @@ class _ManageCategoriesState extends State<ManageFriends> {
                         height: MediaQuery.of(context).size.width * 0.13,
                         color: Theme.of(context).colorScheme.background,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         onPressed: () {
                           findFriend(controller.text, context);
@@ -112,6 +117,7 @@ class _ManageCategoriesState extends State<ManageFriends> {
         });
   }
 
+  // Confirmar borrado de amigo
   void confirmDeleteFriend(BuildContext context, String email) {
     showDialog(
         context: context,
@@ -119,7 +125,7 @@ class _ManageCategoriesState extends State<ManageFriends> {
           return AlertDialog(
             backgroundColor: Theme.of(context).canvasColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(8),
             ),
             title: const Center(
               child: Text('Eliminar Amigo'),
@@ -148,7 +154,7 @@ class _ManageCategoriesState extends State<ManageFriends> {
                     height: MediaQuery.of(context).size.width * 0.13,
                     color: Theme.of(context).colorScheme.background,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -177,34 +183,37 @@ class _ManageCategoriesState extends State<ManageFriends> {
               child: Column(
                 children: [
                   Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
-                            .collection('users')
-                            .doc(currentUser.email)
-                            .collection('friends')
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.035,
-                            child: ListView(
-                              children: snapshot.data!.docs.map((doc) {
-                                final friendData =
-                                    doc.data() as Map<String, dynamic>;
-                                return Friend(
-                                    email: friendData['email'],
-                                    onTap: () {
-                                      confirmDeleteFriend(
-                                          context, friendData['email']);
-                                    });
-                              }).toList(),
-                            ),
-                          );
-                        }),
+                    child:
+                        // Se obtienen los amigos del usuario actual
+                        StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(currentUser.email)
+                                .collection('friends')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.035,
+                                child: ListView(
+                                  children: snapshot.data!.docs.map((doc) {
+                                    final friendData =
+                                        doc.data() as Map<String, dynamic>;
+                                    return Friend(
+                                        email: friendData['email'],
+                                        onTap: () {
+                                          confirmDeleteFriend(
+                                              context, friendData['email']);
+                                        });
+                                  }).toList(),
+                                ),
+                              );
+                            }),
                   ),
                 ],
               ),

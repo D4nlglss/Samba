@@ -16,10 +16,12 @@ class SignInPage extends StatefulWidget {
   State<SignInPage> createState() => _SignInPageState();
 }
 
+// Pantalla de inicio de sesión
 class _SignInPageState extends State<SignInPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  // Iniciar sesión
   void signIn() async {
     String fail = '';
     showDialog(

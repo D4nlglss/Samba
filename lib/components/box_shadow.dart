@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Sombreado de los contenedores
 myBoxShadow() {
   return [
     BoxShadow(

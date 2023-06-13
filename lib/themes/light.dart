@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Tema claro
 ThemeData lightTheme = ThemeData(
   appBarTheme: const AppBarTheme(color: Color(0xFFF4E3CF)),
   iconTheme: IconThemeData(
@@ -15,9 +16,9 @@ ThemeData lightTheme = ThemeData(
         color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
   ),
   colorScheme: ColorScheme.dark(
-      background: Colors.orange.shade600,
-      primary: Colors.amber[400]!,
-      secondary: Colors.amber[300]!,
+      background: const Color(0xFFFF9F45),
+      primary: Colors.amber.shade400,
+      secondary: Colors.pink[200]!,
       tertiary: Colors.black26,
       // tertiary: ,
       brightness: Brightness.light),
@@ -27,7 +28,7 @@ ThemeData lightTheme = ThemeData(
     labelStyle: const TextStyle(color: Colors.black),
     focusedBorder: UnderlineInputBorder(
       borderSide: BorderSide(
-        color: Colors.amber[400]!,
+        color: Colors.amber.shade400,
       ),
     ),
   ),

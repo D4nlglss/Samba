@@ -15,9 +15,11 @@ class RestorePage extends StatefulWidget {
   State<RestorePage> createState() => _RestorePageState();
 }
 
+// Pantalla para restaurar la contraseña
 class _RestorePageState extends State<RestorePage> {
   final emailController = TextEditingController();
 
+  // Restaurar contraseña
   void restorePwd() async {
     String fail = '';
     showDialog(

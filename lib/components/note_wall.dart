@@ -11,6 +11,7 @@ import 'package:samba/pages/edit_page.dart';
 
 import 'friend.dart';
 
+// Widget de las notas
 class NoteWall extends StatefulWidget {
   final String title;
   final String noteId;
@@ -58,6 +59,7 @@ class _NoteWallState extends State<NoteWall> {
     return usableColor;
   }
 
+  // Añadir categoría a la nota
   void addCategory(String title, String color) {
     FirebaseFirestore.instance
         .collection('notes')
@@ -70,6 +72,17 @@ class _NoteWallState extends State<NoteWall> {
     });
   }
 
+  //Quitar categoría de la nota
+  void removeCategory(String title) {
+    FirebaseFirestore.instance
+        .collection('notes')
+        .doc(widget.noteId)
+        .collection('categories')
+        .doc(title)
+        .delete();
+  }
+
+  // Exportar nota en un archivo txt
   void exportNote() async {
     Navigator.pop(context);
     final String fileName = widget.title;
@@ -80,20 +93,12 @@ class _NoteWallState extends State<NoteWall> {
     if (selectedDirectory != null) {
       final File file = File('$selectedDirectory/$fileName.txt');
       await file.writeAsString(fileContent);
-      displayMessage(
-          'Se ha exportado la nota', context, Colors.green.shade400);
+      // ignore: use_build_context_synchronously
+      displayMessage('Se ha exportado la nota', context, Colors.green.shade400);
     }
   }
 
-  void removeCategory(String title) {
-    FirebaseFirestore.instance
-        .collection('notes')
-        .doc(widget.noteId)
-        .collection('categories')
-        .doc(title)
-        .delete();
-  }
-
+  // Widget para mostrar las categorías de una nota
   void showCategoryDialog() {
     showDialog(
         context: context,
@@ -101,7 +106,7 @@ class _NoteWallState extends State<NoteWall> {
           return AlertDialog(
             backgroundColor: Theme.of(context).canvasColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(8),
             ),
             title: const Center(child: Text('Añadir categoría')),
             content: SizedBox(
@@ -144,6 +149,7 @@ class _NoteWallState extends State<NoteWall> {
         });
   }
 
+  // COnfirmación para quitar la categoría
   void showRemoveCategoryDialog() {
     showDialog(
         context: context,
@@ -151,7 +157,7 @@ class _NoteWallState extends State<NoteWall> {
           return AlertDialog(
             backgroundColor: Theme.of(context).canvasColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(8),
             ),
             title: const Center(child: Text('Quitar categoría')),
             content: SizedBox(
@@ -193,6 +199,7 @@ class _NoteWallState extends State<NoteWall> {
         });
   }
 
+  // Confirmación para borrar la nota
   void confirmDeleteDialog() {
     showDialog(
         context: context,
@@ -200,7 +207,7 @@ class _NoteWallState extends State<NoteWall> {
           return AlertDialog(
             backgroundColor: Theme.of(context).canvasColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(8),
             ),
             title: const Center(
               child: Text('Borrar nota'),
@@ -215,7 +222,7 @@ class _NoteWallState extends State<NoteWall> {
                     height: MediaQuery.of(context).size.width * 0.13,
                     color: Theme.of(context).colorScheme.background,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     onPressed: () {
                       deleteNote();
@@ -230,6 +237,7 @@ class _NoteWallState extends State<NoteWall> {
         });
   }
 
+  // Ir a la pantalla de edición
   void goToEditPage() {
     Navigator.pop(context);
     Navigator.push(
@@ -244,6 +252,7 @@ class _NoteWallState extends State<NoteWall> {
                 textColor: widget.textColor)));
   }
 
+  // Borrar la nota
   void deleteNote() async {
     final categoriesDoc = await FirebaseFirestore.instance
         .collection('notes')
@@ -264,6 +273,7 @@ class _NoteWallState extends State<NoteWall> {
     Navigator.pop(context);
   }
 
+  // Elegir amigo para compartir
   void shareNoteDialog() {
     showDialog(
         context: context,
@@ -271,7 +281,7 @@ class _NoteWallState extends State<NoteWall> {
           return AlertDialog(
             backgroundColor: Theme.of(context).canvasColor,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(8),
             ),
             title: const Center(child: Text('Compartir con ...')),
             content: SizedBox(
@@ -310,6 +320,7 @@ class _NoteWallState extends State<NoteWall> {
         });
   }
 
+  // COmpartir nota
   void shareNote(String email) {
     FirebaseFirestore.instance.collection('notes').add({
       'title': widget.title,
@@ -321,6 +332,7 @@ class _NoteWallState extends State<NoteWall> {
     displayMessage('Se ha compartido la nota', context, Colors.green.shade400);
   }
 
+  // Vista previa de la nota
   void enlargeNote() {
     showDialog(
         context: context,
@@ -331,7 +343,7 @@ class _NoteWallState extends State<NoteWall> {
             child: Container(
               decoration: BoxDecoration(
                   color: getNoteColor(context),
-                  borderRadius: BorderRadius.circular(10)),
+                  borderRadius: BorderRadius.circular(8)),
               child: Stack(
                 children: [
                   Padding(
@@ -405,8 +417,17 @@ class _NoteWallState extends State<NoteWall> {
       onTap: enlargeNote,
       child: Container(
         decoration: BoxDecoration(
-            color: getNoteColor(context),
-            borderRadius: BorderRadius.circular(10)),
+          color: getNoteColor(context),
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              offset: const Offset(5, 5),
+              spreadRadius: 1,
+              blurRadius: 0,
+            )
+          ],
+        ),
         margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
         padding: const EdgeInsets.all(25),
         child: Column(
@@ -442,6 +463,7 @@ class _NoteWallState extends State<NoteWall> {
                 ),
               ],
             ),
+            // Se obtienen todas las notas del usuario actual
             StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('notes')

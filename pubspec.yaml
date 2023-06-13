@@ -31,23 +31,23 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
-  firebase_core: ^2.13.1
-  firebase_auth: ^4.6.2
-  cloud_firestore: ^4.8.0
+  cupertino_icons:
+  firebase_core:
+  firebase_auth:
+  cloud_firestore:
   google_fonts:
-  connectivity_plus:
-  internet_connection_checker:
   flutter_speed_dial:
   flutter_colorpicker:
-  file_picker: ^5.3.2
+  file_picker:
+  connectivity_plus:
+  internet_connection_checker:
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints:
   flutter_launcher_icons:
   flutter_native_splash:
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
+// Clase para editar las notas
 // ignore: must_be_immutable
 class EditPage extends StatefulWidget {
   final String title;
@@ -28,6 +28,11 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
+  final currentUser = FirebaseAuth.instance.currentUser!;
+  final titleController = TextEditingController();
+  final bodyController = TextEditingController();
+
+  // Preparar color de la nota para la ui
   Color getNoteColor(BuildContext context) {
     Color usableColor = Theme.of(context).canvasColor;
     if (!widget.color!.contains('Theme')) {
@@ -49,10 +54,6 @@ class _EditPageState extends State<EditPage> {
     return usableColor;
   }
 
-  final currentUser = FirebaseAuth.instance.currentUser!;
-  final titleController = TextEditingController();
-  final bodyController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -60,6 +61,7 @@ class _EditPageState extends State<EditPage> {
     bodyController.text = widget.body;
   }
 
+  // Guardar nota
   void saveNote() async {
     await FirebaseFirestore.instance
         .collection('notes')
@@ -75,13 +77,14 @@ class _EditPageState extends State<EditPage> {
     Navigator.pop(context);
   }
 
+  // Selector de color
   void pickColor(String element) {
     showDialog(
         context: context,
         builder: (context) => AlertDialog(
               backgroundColor: Theme.of(context).canvasColor,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(8),
               ),
               title: const Text('Elige un color'),
               content: Column(
@@ -102,7 +105,7 @@ class _EditPageState extends State<EditPage> {
                   MaterialButton(
                     color: Theme.of(context).colorScheme.background,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(
                       'Seleccionar',
@@ -133,8 +136,17 @@ class _EditPageState extends State<EditPage> {
               padding: const EdgeInsets.only(left: 25, right: 25),
               child: Container(
                 decoration: BoxDecoration(
-                    color: getNoteColor(context),
-                    borderRadius: BorderRadius.circular(10)),
+                  color: getNoteColor(context),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      offset: const Offset(5, 5),
+                      spreadRadius: 1,
+                      blurRadius: 0,
+                    )
+                  ],
+                ),
                 child: Column(
                   children: [
                     const SizedBox(
@@ -170,6 +182,7 @@ class _EditPageState extends State<EditPage> {
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             TextField(
+                              autofocus: true,
                               decoration: const InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -184,7 +197,7 @@ class _EditPageState extends State<EditPage> {
                               ),
                               style: TextStyle(color: getTextColor(context)),
                               maxLines: null,
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               controller: bodyController,
                               textInputAction: TextInputAction.newline,
                             ),
@@ -212,7 +225,7 @@ class _EditPageState extends State<EditPage> {
                       color: Colors.white,
                       size: 35,
                     ),
-                    elevation: 0,
+                    elevation: 1.7,
                     overlayColor: Colors.black,
                     overlayOpacity: 0.4,
                     spacing: 30,

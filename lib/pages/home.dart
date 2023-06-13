@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:samba/components/drawer.dart';
 import 'package:samba/components/note_wall.dart';
 import 'package:samba/components/alert_dialog.dart';
@@ -12,9 +15,6 @@ import 'package:samba/pages/manage_friends.dart';
 import 'package:samba/pages/profile_page.dart';
 import 'package:samba/pages/search_by_title_page.dart';
 
-//TODO
-//! Categorías
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -22,15 +22,103 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomeState();
 }
 
+// Pantalla principal
 class _HomeState extends State<HomePage> {
+  late StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
   final currentUser = FirebaseAuth.instance.currentUser!;
   final textController = TextEditingController();
+
+  @override
+  void initState() {
+    getConnectivity();
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    subscription.cancel();
+    super.dispose;
+  }
+
+// COmprueba si se ha perdido la conexión a internet
+//! No funciona si se entra a la app sin conexión
+  getConnectivity() {
+    subscription = Connectivity().onConnectivityChanged.listen(
+      (ConnectivityResult result) async {
+        isDeviceConnected = await InternetConnectionChecker().hasConnection;
+        if (!isDeviceConnected && isAlertSet == false) {
+          showNoConnectionDialog();
+          setState(() => isAlertSet = true);
+        }
+      },
+    );
+  }
+
+  // Diálogo que bloquea la app hasta recuperar la conexión
+  showNoConnectionDialog() => showDialog<String>(
+        context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: Theme.of(context).canvasColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          content: const Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.wifi_off,
+                color: Colors.redAccent,
+                size: 135,
+              ),
+              Text('¡Vaya!',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  )),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Parece que tu dispositivo no tiene conexión a internet ...',
+                style: TextStyle(fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+          actions: [
+            const Divider(),
+            Center(
+              child: MaterialButton(
+                color: Theme.of(context).colorScheme.background,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                onPressed: () async {
+                  Navigator.pop(context, 'Cancel');
+                  setState(() => isAlertSet = false);
+                  isDeviceConnected =
+                      await InternetConnectionChecker().hasConnection;
+                  if (!isDeviceConnected && isAlertSet == false) {
+                    showNoConnectionDialog();
+                    setState(() => isAlertSet = true);
+                  }
+                },
+                child: const Text('Reintentar'),
+              ),
+            ),
+          ],
+        ),
+      );
+
   // Cerrar sesión
   void signOut() {
     FirebaseAuth.instance.signOut();
   }
 
-  // Importar notas: obtener archivo
+  // Importar notas
   void imoportNote() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -53,6 +141,7 @@ class _HomeState extends State<HomePage> {
         });
       } catch (e) {
         // Capturar excepción
+        //? No hay que manejarla en mayor medida, simplemente si falla no hará nada
       }
     } else {
       // El usuario cancela la selección de archivo
@@ -70,21 +159,25 @@ class _HomeState extends State<HomePage> {
         'color': 'Theme.of(context).canvasColor',
         'textColor': ' '
       });
+      textController.text = '';
     }
     textController.text = '';
   }
 
+  // Añadir nota
   uploadNote() {
     myDialog(context, 'Añadir nota', textController, addNote,
         const Icon(Icons.add_outlined));
   }
 
+  // Buscar nota
   searchNote() {
     myDialog(context, 'Buscar por título', textController, goSearchByTitlePage,
         const Icon(Icons.search));
     textController.text = '';
   }
 
+  // Ir a la pantalla de resultados de búsqueda
   void goSearchByTitlePage() {
     Navigator.pop(context);
     Navigator.push(
@@ -94,18 +187,21 @@ class _HomeState extends State<HomePage> {
                 SearchByTitlePage(search: textController.text)));
   }
 
+  // Ir a la página de perfil
   void goProfilePage() {
     Navigator.pop(context);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const ProfilePage()));
   }
 
+  // Ir a la página de administrar caregorías
   void goManageCategoriesPage() {
     Navigator.pop(context);
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const ManageCategories()));
   }
 
+  // Ir a la página de administrar amigos
   void goManageFriendsPage() {
     Navigator.pop(context);
     Navigator.push(context,
@@ -151,7 +247,9 @@ class _HomeState extends State<HomePage> {
               child: Column(
                 children: [
                   Expanded(
-                    child: StreamBuilder(
+                    child:
+                        // Se obtienen las notas del usuario actual
+                        StreamBuilder(
                       stream: FirebaseFirestore.instance
                           .collection('notes')
                           .where('owner', isEqualTo: currentUser.email)

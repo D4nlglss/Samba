@@ -7,12 +7,14 @@ import 'package:samba/themes/light.dart';
 
 import 'auth/auth.dart';
 
+// Función principal
 void main() async {
+  // Se inicializan las dependencias
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // Bloquear rotación de la pantalla
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  //Barra de navegación transparente
+  // Barra de navegación transparente
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -22,14 +24,17 @@ void main() async {
   runApp(const MyApp());
 }
 
+// Clase principal
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // Se preparan los temas
       theme: lightTheme,
       darkTheme: darkTheme,
+      //? Esto es sólo para el modo de depuración
       debugShowCheckedModeBanner: false,
       home: const AuthPage(),
     );

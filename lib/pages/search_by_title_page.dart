@@ -11,6 +11,9 @@ class SearchByTitlePage extends StatefulWidget {
   State<SearchByTitlePage> createState() => _SearchByTitlePageState();
 }
 
+// Pantalla de resultados de búsqueda
+//! Firestore sólo proporciona búsquedas exactas, en caso de querer
+//! parametrizar la búsqueda sería necesario un servicio de terceros
 class _SearchByTitlePageState extends State<SearchByTitlePage> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
@@ -26,7 +29,9 @@ class _SearchByTitlePageState extends State<SearchByTitlePage> {
           child: Column(
             children: [
               Expanded(
-                child: StreamBuilder(
+                child:
+                    // Se obtienen las notas del usuario actual que coincidan con la búsqueda
+                    StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('notes')
                       .where('owner', isEqualTo: currentUser.email)
@@ -64,4 +69,3 @@ class _SearchByTitlePageState extends State<SearchByTitlePage> {
     );
   }
 }
-

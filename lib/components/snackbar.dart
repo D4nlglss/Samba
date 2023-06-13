@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Widget para mostrar mensajes en pantalla
 void displayMessage(String message, BuildContext context, Color color) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     backgroundColor: color,

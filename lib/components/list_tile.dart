@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Elementos del menú lateral
 class MyListTile extends StatelessWidget {
   final IconData icon;
   final String text;

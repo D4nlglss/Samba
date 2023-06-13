@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Campos de texto personalizados
 class MyTextField extends StatelessWidget {
   final TextEditingController controller;
   final TextInputAction action;
@@ -79,4 +80,3 @@ class MyTextFieldII extends StatelessWidget {
     );
   }
 }
-
