@@ -81,19 +81,21 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          Expanded(
-            child: Container(color: Theme.of(context).colorScheme.background),
+          Container(
+            color: Theme.of(context).colorScheme.background,
+            width: size.width,
+            height: size.height,
           ),
           Align(
             alignment: Alignment.topCenter,
             child: Container(
-              height: height * 0.8,
+              height: size.height * 0.8,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                     bottomRight: Radius.elliptical(200, 50),
@@ -118,7 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     SizedBox(
-                      height: height * 0.05,
+                      height: size.height * 0.05,
                     ),
                     const Text(
                       "¡Crea tu cuenta de Samba!",
@@ -177,7 +179,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ],
                     ),
                     SizedBox(
-                      height: height * 0.05,
+                      height: size.height * 0.05,
                     ),
                   ],
                 ),

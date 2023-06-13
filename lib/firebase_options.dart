@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDmfUftKQQ21y0j7ct18Z0WCJ7FvfcwWQE',
-    appId: '1:436474538415:web:4d787320cc86e77909275a',
-    messagingSenderId: '436474538415',
-    projectId: 'samba-fb655',
-    authDomain: 'samba-fb655.firebaseapp.com',
-    storageBucket: 'samba-fb655.appspot.com',
+    apiKey: 'AIzaSyAaQlRROdz_bygGDVoPxE3zZ27I3xdM7qc',
+    appId: '1:351030253991:web:5199cb1a66fc502ecb7e82',
+    messagingSenderId: '351030253991',
+    projectId: 'samba-87c50',
+    authDomain: 'samba-87c50.firebaseapp.com',
+    storageBucket: 'samba-87c50.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDH7MS0MR46KJCFSXNGAlWY5G5qypfjWPw',
-    appId: '1:436474538415:android:7654d48f88783ca509275a',
-    messagingSenderId: '436474538415',
-    projectId: 'samba-fb655',
-    storageBucket: 'samba-fb655.appspot.com',
+    apiKey: 'AIzaSyDJmlfncavzAoPFM_FwWSJtyUiGYVv2KM4',
+    appId: '1:351030253991:android:529bfa928c44f208cb7e82',
+    messagingSenderId: '351030253991',
+    projectId: 'samba-87c50',
+    storageBucket: 'samba-87c50.appspot.com',
   );
 }

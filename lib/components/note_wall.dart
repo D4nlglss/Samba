@@ -124,6 +124,17 @@ class _NoteWallState extends State<NoteWall> {
                         child: CircularProgressIndicator(),
                       );
                     }
+                    if (snapshot.data!.docs.isEmpty) {
+                      return Center(
+                        child: Text(
+                          'No has creado\nninguna categoría',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.tertiary,
+                              fontSize: 20),
+                        ),
+                      );
+                    }
                     return SizedBox(
                       height: MediaQuery.of(context).size.height * 0.035,
                       child: ListView(
@@ -149,7 +160,7 @@ class _NoteWallState extends State<NoteWall> {
         });
   }
 
-  // COnfirmación para quitar la categoría
+  // Confirmación para quitar la categoría
   void showRemoveCategoryDialog() {
     showDialog(
         context: context,
@@ -391,12 +402,57 @@ class _NoteWallState extends State<NoteWall> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Text(
-                                  widget.body,
-                                  style: TextStyle(
-                                      color: getTextColor(context),
-                                      fontSize: 16),
-                                ),
+                                widget.body != ''
+                                    ? Text(
+                                        widget.body,
+                                        style: TextStyle(
+                                            color: getTextColor(context),
+                                            fontSize: 16),
+                                      )
+                                    : Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              'Aún no has escrito nada,',
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary,
+                                                  fontSize: 20),
+                                            ),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  'Presiona " ',
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .tertiary,
+                                                      fontSize: 20),
+                                                ),
+                                                Icon(
+                                                  Icons.settings,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .tertiary,
+                                                  size: 16,
+                                                ),
+                                                Text(
+                                                  ' " para editar',
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .tertiary,
+                                                      fontSize: 20),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                               ],
                             ),
                           ),
@@ -476,7 +532,17 @@ class _NoteWallState extends State<NoteWall> {
                       child: CircularProgressIndicator(),
                     );
                   }
-
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Text(
+                        'Sin categorías',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.tertiary,
+                            fontSize: 16),
+                      ),
+                    );
+                  }
                   return SizedBox(
                     height: MediaQuery.of(context).size.height * 0.035,
                     child: ListView(
@@ -485,7 +551,6 @@ class _NoteWallState extends State<NoteWall> {
                       physics: const ClampingScrollPhysics(),
                       children: snapshot.data!.docs.map((doc) {
                         final categoryData = doc.data() as Map<String, dynamic>;
-
                         return MyCategory(
                           title: categoryData['title'],
                           color: categoryData['color'],

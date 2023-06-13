@@ -11,6 +11,8 @@ import 'auth/auth.dart';
 void main() async {
   // Se inicializan las dependencias
   WidgetsFlutterBinding.ensureInitialized();
+  // Splash screen
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // Bloquear rotación de la pantalla
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -34,8 +36,6 @@ class MyApp extends StatelessWidget {
       // Se preparan los temas
       theme: lightTheme,
       darkTheme: darkTheme,
-      //? Esto es sólo para el modo de depuración
-      debugShowCheckedModeBanner: false,
       home: const AuthPage(),
     );
   }

@@ -256,18 +256,31 @@ class _HomeState extends State<HomePage> {
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          return ListView.builder(
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (context, index) {
-                                final note = snapshot.data!.docs[index];
-                                return NoteWall(
-                                    title: note['title'],
-                                    noteId: note.id,
-                                    body: note['body'],
-                                    owner: note['owner'],
-                                    color: note['color'],
-                                    textColor: note['textColor']);
-                              });
+                          if (snapshot.data!.docs.isEmpty) {
+                            return Center(
+                              child: Text(
+                                'Para crear una nota\npresiona el botón "+"',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.tertiary,
+                                    fontSize: 20),
+                              ),
+                            );
+                          } else {
+                            return ListView.builder(
+                                itemCount: snapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  final note = snapshot.data!.docs[index];
+                                  return NoteWall(
+                                      title: note['title'],
+                                      noteId: note.id,
+                                      body: note['body'],
+                                      owner: note['owner'],
+                                      color: note['color'],
+                                      textColor: note['textColor']);
+                                });
+                          }
                         } else if (snapshot.hasError) {
                           return const Center(
                             child: Text('Ha ocurrido un error'),

@@ -56,19 +56,21 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       extendBody: true,
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          Expanded(
-            child: Container(color: Theme.of(context).colorScheme.background),
+          Container(
+            color: Theme.of(context).colorScheme.background,
+            width: size.width,
+            height: size.height,
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: height * 0.8,
+              height: size.height * 0.8,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.elliptical(200, 50),
@@ -84,7 +86,7 @@ class _SignInPageState extends State<SignInPage> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     SizedBox(
-                      height: height * 0.05,
+                      height: size.height * 0.05,
                     ),
                     Center(
                       child: Text(
@@ -96,7 +98,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                     ),
                     SizedBox(
-                      height: height * 0.05,
+                      height: size.height * 0.05,
                     ),
                     const Text(
                       "¡Hola!, me alegro de verte",

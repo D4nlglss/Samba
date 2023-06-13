@@ -212,6 +212,19 @@ class _ManageCategoriesState extends State<ManageCategories> {
                                   child: CircularProgressIndicator(),
                                 );
                               }
+                              if (snapshot.data!.docs.isEmpty) {
+                                return Center(
+                                  child: Text(
+                                    'Para crear una categoría\npresiona el botón "+"',
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .tertiary,
+                                        fontSize: 20),
+                                  ),
+                                );
+                              }
                               return SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.035,
