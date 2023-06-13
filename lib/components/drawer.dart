@@ -8,7 +8,11 @@ class MyDrawer extends StatelessWidget {
   final void Function()? onManageCategoriesTap;
   final void Function()? onManageFriendsTap;
   const MyDrawer(
-      {super.key, required this.onProfileTap, required this.onSignOutTap, required this.onManageCategoriesTap, required this.onManageFriendsTap});
+      {super.key,
+      required this.onProfileTap,
+      required this.onSignOutTap,
+      required this.onManageCategoriesTap,
+      required this.onManageFriendsTap});
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +26,11 @@ class MyDrawer extends StatelessWidget {
               DrawerHeader(
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.background),
-                child: Expanded(
-                  child: Center(
-                    child: Image(
-                      width: MediaQuery.of(context).size.width * 0.18,
-                      image: const AssetImage(
-                        'assets/icons/icon.png',
-                      ),
+                child: Center(
+                  child: Image(
+                    width: MediaQuery.of(context).size.width * 0.18,
+                    image: const AssetImage(
+                      'assets/icons/icon.png',
                     ),
                   ),
                 ),
