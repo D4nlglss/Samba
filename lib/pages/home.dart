@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:samba/components/drawer.dart';
@@ -10,8 +13,7 @@ import 'package:samba/pages/profile_page.dart';
 import 'package:samba/pages/search_by_title_page.dart';
 
 //TODO
-//! Importar/Exportar: añadir opciñon al speed dial para crear archivo con el cuerpo de la nota
-//! y el título como nombre del archivo.txt. Añadir menú en la appbar para importar un archivo.txt.
+//! Categorías
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,6 +28,35 @@ class _HomeState extends State<HomePage> {
   // Cerrar sesión
   void signOut() {
     FirebaseAuth.instance.signOut();
+  }
+
+  // Importar notas: obtener archivo
+  void imoportNote() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['txt'],
+    );
+
+    if (result != null) {
+      PlatformFile doc = result.files.first;
+      try {
+        final File file = File(doc.path!);
+        final String title = doc.name.split('.')[0];
+        final body = await file.readAsString();
+
+        FirebaseFirestore.instance.collection('notes').add({
+          'title': title,
+          'owner': currentUser.email,
+          'body': body,
+          'color': 'Theme.of(context).canvasColor',
+          'textColor': ' '
+        });
+      } catch (e) {
+        // Capturar excepción
+      }
+    } else {
+      // El usuario cancela la selección de archivo
+    }
   }
 
   // Añadir notas
@@ -87,6 +118,25 @@ class _HomeState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Samba'),
+        actions: [
+          PopupMenuButton<int>(
+            icon: Icon(
+              Icons.more_vert,
+              color: Theme.of(context).iconTheme.color,
+            ),
+            color: Theme.of(context).canvasColor,
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                      imoportNote();
+                    },
+                    child: const Expanded(child: Text('Importar archivo'))),
+              ),
+            ],
+          ),
+        ],
       ),
       drawer: MyDrawer(
         onProfileTap: goProfilePage,

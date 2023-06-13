@@ -7,12 +7,14 @@ class MySpeedDial extends StatelessWidget {
   final Function() edit;
   final Function() delete;
   final Function() share;
+  final Function() export;
   const MySpeedDial(
       {super.key,
       required this.color,
       required this.edit,
       required this.delete,
-      required this.share});
+      required this.share,
+      required this.export});
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,12 @@ class MySpeedDial extends StatelessWidget {
             label: 'Compartir',
             backgroundColor: Theme.of(context).canvasColor,
             onTap: share),
+        SpeedDialChild(
+            child: Icon(Icons.arrow_outward,
+                color: Theme.of(context).scaffoldBackgroundColor),
+            label: 'Exportar',
+            backgroundColor: Theme.of(context).iconTheme.color,
+            onTap: export),
       ],
     );
   }

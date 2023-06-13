@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:samba/components/my_category.dart';
@@ -65,6 +68,21 @@ class _NoteWallState extends State<NoteWall> {
       'title': title,
       'color': color,
     });
+  }
+
+  void exportNote() async {
+    Navigator.pop(context);
+    final String fileName = widget.title;
+    final String fileContent = widget.body;
+
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+
+    if (selectedDirectory != null) {
+      final File file = File('$selectedDirectory/$fileName.txt');
+      await file.writeAsString(fileContent);
+      displayMessage(
+          'Se ha exportado la nota', context, Colors.green.shade400);
+    }
   }
 
   void removeCategory(String title) {
@@ -326,7 +344,8 @@ class _NoteWallState extends State<NoteWall> {
                             color: getTextColor(context),
                             edit: goToEditPage,
                             delete: confirmDeleteDialog,
-                            share: shareNoteDialog),
+                            share: shareNoteDialog,
+                            export: exportNote),
                       ],
                     ),
                   ),
