@@ -24,11 +24,11 @@ class HomePage extends StatefulWidget {
 
 // Pantalla principal
 class _HomeState extends State<HomePage> {
+  final currentUser = FirebaseAuth.instance.currentUser!;
+  final textController = TextEditingController();
   late StreamSubscription subscription;
   bool isDeviceConnected = false;
   bool isAlertSet = false;
-  final currentUser = FirebaseAuth.instance.currentUser!;
-  final textController = TextEditingController();
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _HomeState extends State<HomePage> {
     super.dispose;
   }
 
-// COmprueba si se ha perdido la conexión a internet
+// Comprueba si se ha perdido la conexión a internet
 //! No funciona si se entra a la app sin conexión
   getConnectivity() {
     subscription = Connectivity().onConnectivityChanged.listen(

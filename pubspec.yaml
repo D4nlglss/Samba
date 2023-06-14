@@ -33,17 +33,18 @@ dev_dependencies:
   flutter_native_splash:
 
 #dart run flutter_launcher_icons
-flutter_launcher_icons:
+flutter_icons:
   android: true
   image_path: 'assets/icons/icon.png'
   adaptive_icon_background: '#FFFFFF'
+  adaptive_icon_foreground: 'assets/icons/adaptive_icon.png'
 
 flutter_native_splash:
 #dart run flutter_native_splash:create
   #image
   image: assets/icons/icon.png
   #bg color
-  color: "#ffffff"
+  color: "#FFFFFF"
   #bg image
   #background_image: assets/images/...
 
