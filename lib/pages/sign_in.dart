@@ -49,6 +49,8 @@ class _SignInPageState extends State<SignInPage> {
         fail = 'La contraseña no es correcta.';
       } else if (fail.contains('no user record corresponding')) {
         fail = 'No existe un usuario con ese correo electrónico';
+      } else if (fail.contains('A network error')) {
+        fail = 'Parece que el dispositivo no tiene conexión';
       }
       displayMessage(fail, context, Colors.redAccent);
     }

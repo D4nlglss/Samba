@@ -46,6 +46,8 @@ class _RestorePageState extends State<RestorePage> {
         fail = '¡No has introducido ningún correo electrónico!';
       } else if (fail.contains('email address is badly formatted')) {
         fail = 'El correo electrónico no es válido.';
+      } else if (fail.contains('A network error')) {
+        fail = 'Parece que el dispositivo no tiene conexión';
       }
       displayMessage(fail, context, Colors.redAccent);
     }

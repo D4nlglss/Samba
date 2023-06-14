@@ -74,6 +74,8 @@ class _SignUpPageState extends State<SignUpPage> {
         fail = 'El correo electrónico ya está en uso';
       } else if (fail.contains('at least 6')) {
         fail = 'La contraseña debe tener 6 caracteres como mínimo';
+      } else if (fail.contains('A network error')) {
+        fail = 'Parece que el dispositivo no tiene conexión';
       }
       displayMessage(fail, context, Colors.redAccent);
     }
