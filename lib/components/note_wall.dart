@@ -296,36 +296,39 @@ class _NoteWallState extends State<NoteWall> {
             ),
             title: const Center(child: Text('Compartir con ...')),
             content: SizedBox(
-              width: 50,
-              height: 350,
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('users')
-                      .doc(currentUser.email)
-                      .collection('friends')
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.035,
-                      child: ListView(
-                        children: snapshot.data!.docs.map((doc) {
-                          final friendData = doc.data() as Map<String, dynamic>;
-                          return Friend(
-                              email: friendData['email'],
-                              onTap: () {
-                                shareNote(friendData['email']);
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              });
-                        }).toList(),
-                      ),
-                    );
-                  }),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.4,
+              child:
+                  // Se obtienen los amigos del usuario actual
+                  StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(currentUser.email)
+                          .collection('friends')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.035,
+                          child: ListView(
+                            children: snapshot.data!.docs.map((doc) {
+                              final friendData =
+                                  doc.data() as Map<String, dynamic>;
+                              return Friend(
+                                  email: friendData['email'],
+                                  onTap: () {
+                                    shareNote(friendData['email']);
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  });
+                            }).toList(),
+                          ),
+                        );
+                      }),
             ),
           );
         });
@@ -337,8 +340,8 @@ class _NoteWallState extends State<NoteWall> {
       'title': widget.title,
       'owner': email,
       'body': widget.body,
-      'color': 'Theme.of(context).canvasColor',
-      'textColor': ' '
+      'color': widget.color.toString(),
+      'textColor': widget.textColor.toString(),
     });
     displayMessage('Se ha compartido la nota', context, Colors.green.shade400);
   }
