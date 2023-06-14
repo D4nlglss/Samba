@@ -123,7 +123,7 @@ class _EditPageState extends State<EditPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Edición'),
+        title: const Text('Editando'),
       ),
       body: Center(
         child: Column(

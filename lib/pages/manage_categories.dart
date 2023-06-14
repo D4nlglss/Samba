@@ -189,7 +189,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Tus Categorías'),
+        title: const Text('Mis Categorías'),
       ),
       body: SafeArea(
         child: Stack(

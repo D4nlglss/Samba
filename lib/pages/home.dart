@@ -213,7 +213,7 @@ class _HomeState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Samba'),
+        title: const Text('Mis Notas'),
         actions: [
           PopupMenuButton<int>(
             icon: Icon(
@@ -228,7 +228,7 @@ class _HomeState extends State<HomePage> {
                       Navigator.pop(context);
                       imoportNote();
                     },
-                    child: const Expanded(child: Text('Importar archivo'))),
+                    child: const Center(child: Text('Importar archivo'))),
               ),
             ],
           ),

@@ -401,6 +401,7 @@ class _NoteWallState extends State<NoteWall> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 widget.body != ''
                                     ? Text(
@@ -415,7 +416,6 @@ class _NoteWallState extends State<NoteWall> {
                                           children: [
                                             Text(
                                               'Aún no has escrito nada,',
-                                              textAlign: TextAlign.start,
                                               style: TextStyle(
                                                   color: Theme.of(context)
                                                       .colorScheme

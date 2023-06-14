@@ -174,7 +174,7 @@ class _ManageFriendsState extends State<ManageFriends> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Tus Amigos'),
+        title: const Text('Mis Amigos'),
       ),
       body: SafeArea(
         child: Stack(
