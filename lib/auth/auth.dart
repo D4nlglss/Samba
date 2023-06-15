@@ -50,57 +50,62 @@ class _AuthPageState extends State<AuthPage> {
   showNoConnectionDialog() => showDialog<String>(
         barrierDismissible: false,
         context: context,
-        builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).canvasColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          content: const Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.wifi_off,
-                color: Colors.redAccent,
-                size: 135,
-              ),
-              Text('¡Vaya!',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  )),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Parece que tu dispositivo no tiene conexión a internet ...',
-                style: TextStyle(fontSize: 18),
-                textAlign: TextAlign.center,
+        builder: (context) => WillPopScope(
+          onWillPop: () async {
+            return false;
+          },
+          child: AlertDialog(
+            backgroundColor: Theme.of(context).canvasColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            content: const Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.wifi_off,
+                  color: Colors.redAccent,
+                  size: 135,
+                ),
+                Text('¡Vaya!',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    )),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'Parece que tu dispositivo no tiene conexión a internet ...',
+                  style: TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            actions: [
+              const Divider(),
+              Center(
+                child: MaterialButton(
+                  color: Theme.of(context).colorScheme.background,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  onPressed: () async {
+                    Navigator.pop(context, 'Cancel');
+                    setState(() => isAlertSet = false);
+                    isDeviceConnected =
+                        await InternetConnectionChecker().hasConnection;
+                    if (!isDeviceConnected && isAlertSet == false) {
+                      showNoConnectionDialog();
+                      setState(() => isAlertSet = true);
+                    }
+                  },
+                  child: const Text('Reintentar'),
+                ),
               ),
             ],
           ),
-          actions: [
-            const Divider(),
-            Center(
-              child: MaterialButton(
-                color: Theme.of(context).colorScheme.background,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                onPressed: () async {
-                  Navigator.pop(context, 'Cancel');
-                  setState(() => isAlertSet = false);
-                  isDeviceConnected =
-                      await InternetConnectionChecker().hasConnection;
-                  if (!isDeviceConnected && isAlertSet == false) {
-                    showNoConnectionDialog();
-                    setState(() => isAlertSet = true);
-                  }
-                },
-                child: const Text('Reintentar'),
-              ),
-            ),
-          ],
         ),
       );
 
