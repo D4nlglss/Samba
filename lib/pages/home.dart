@@ -58,6 +58,7 @@ class _HomeState extends State<HomePage> {
 
   // Diálogo que bloquea la app hasta recuperar la conexión
   showNoConnectionDialog() => showDialog<String>(
+        barrierDismissible: false,
         context: context,
         builder: (context) => AlertDialog(
           backgroundColor: Theme.of(context).canvasColor,

@@ -48,6 +48,7 @@ class _AuthPageState extends State<AuthPage> {
 
   // Diálogo que bloquea la app hasta recuperar la conexión
   showNoConnectionDialog() => showDialog<String>(
+        barrierDismissible: false,
         context: context,
         builder: (context) => AlertDialog(
           backgroundColor: Theme.of(context).canvasColor,
